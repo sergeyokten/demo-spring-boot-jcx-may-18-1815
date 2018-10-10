@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>greeting page</title>
+        <meta charset="utf-8"/>
+    </head>
+    <body>
+        you saved
+        [[${contact.id}]]
+        [[${contact.name}]]
+        [[${contact.email}]]
+        [[${contact.number}]]
+
+
+        <p>all contacts you have is - </p>
+        <ul>
+            <li th:each="contact :${allContacts}">
+                <div>[[${contact.name}]]</div>
+                <div>[[${contact.number}]]</div>
+                <div>
+                    <a th:href="@{'/contact/' + ${contact.id}}">
+                        <button>details</button>
+                    </a>
+
+                </div>
+            </li>
+        </ul>
+
+    </body>
+</html>
