@@ -18,6 +18,7 @@ public class Contact {
     private String name;
     private String email;
     private String number;
+    private String avatar;
 
 
     public Contact() {

@@ -3,17 +3,100 @@
     <head>
         <title>home page titiel</title>
         <meta charset="utf-8"/>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     </head>
     <body>
+
+        <hr>
+
+        <form th:action="@{/saveUser}" method="post">
+            <input type="" name="username" placeholder="username">
+            <input type="" name="password" placeholder="password">
+            <input type="submit" value="go!">
+        </form>
+
         <h1>hello! enter your name</h1>
-        <form action="/saveContact" method="get">
-            <input type="" name="imya" placeholder="enter your name here">
+        <form action="/saveContact" method="POST" enctype="multipart/form-data">
+            <input type="" name="name" placeholder="enter your name here">
             <input type="" name="email" placeholder="enter your name here">
             <input type="" name="number" placeholder="enter your name here">
+
+            <input type="file" name="image" placeholder="">
             <input type="submit" name="" placeholder="">
 
         </form>
 
 
+        <div><a href="/showAllContacts"> showAllContacts</a></div>
+
+        <hr>
+
+        <div>
+            <input type="" id="name" placeholder="name">
+            <input type="" id="email" placeholder="email">
+            <input type="" id="number" placeholder="number">
+            <button id="btn">save contact</button>
+        </div>
+        <hr>
+        <form id="form1">
+            <input type="file" id="file" placeholder="">
+            <button id="upload">uplolad</button>
+        </form>
+
+        <div id="representer"></div>
+        <script>
+
+
+            $("#upload").click(function (e) {
+                e.preventDefault();
+                let formData = new FormData();
+                formData.append("xxx", $("#file").files[0]);
+                $.ajax({
+                    url: '/upload',
+                    type: 'POST',
+                    data: formData,
+                    enctype: "multipart/form-data",
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    success: function () {
+                        console.log('ok')
+                    }, error: function (err) {
+                        console.log(err);
+                    }
+
+                })
+
+
+            });
+            $("#btn").click(function () {
+                let name = $("#name").val();
+                let email = $("#email").val();
+                let number = $("#number").val();
+                let contact = {name, email, number};
+                contact = JSON.stringify(contact);
+                $("#representer").empty();
+                $.ajax({
+                    url: "/saveContactRest",
+                    type: "POST",
+                    data: contact,
+                    contentType: "application/json",
+                    success: function (responseList) {
+                        console.log(responseList);
+                        for (const element of responseList) {
+
+                            let contact = $('<p/>', {text: element.id + " " + element.name});
+                            $("#representer").append(contact);
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+
+            })
+
+        </script>
     </body>
 </html>
